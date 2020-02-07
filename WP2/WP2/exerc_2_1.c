@@ -1,8 +1,17 @@
-/*
+/* ====================================
 
-Enter header stuff maybe
+File name: exerc_2_1.c
+Date: 2020-02-06
+Group nr 5
+Members that contribute to the solutions
+Erik Tingström
+Lema Rassul
+Susan Lieu
+Member not present at demonstration time:
+Lema Rassul
+Demonstration code: 36068
 
-*/
+====================================== */
 
 #include <stdio.h>
 #include <string.h>
@@ -21,17 +30,15 @@ void copyString(char text[]){
     copiedText[i] = text[i];
     i++;
   }
-  puts("Copied text manually: ");
-  puts(copiedText);
+  printf("Copied text manually: %s\n", copiedText);
 }
 
-int main(void){
+int main(){
   char text[MAX];
-
-  //read up on memset in optional reading in canvas and gdb debugging
 
   puts("Enter a string: ");
   fgets(text, MAX, stdin);
   copyStringUsingStrcpy(text);
   copyString(text);
+  return 0;
 }
