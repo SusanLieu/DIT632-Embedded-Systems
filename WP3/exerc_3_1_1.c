@@ -55,19 +55,17 @@ void recordDirections(ROBOT *records, int *last){
   while (i < len - 1){
     if (directions[i] == 'm'){
       move(records);
-      records++;
-      if(records->xpos < 0 || records->xpos > 99 || records->ypos < 0 || records->ypos > 99){
-        i++;
-        break;
-      }
     } else if (directions[i] == 't'){
       turn(records);
-      records++;
     } else {
       puts("Error: Another character other than m or t was entered.");
       break;
     }
+    records++;
     i++;
+    if(records->xpos < 0 || records->xpos > 99 || records->ypos < 0 || records->ypos > 99){
+      break;
+    }
   }
   *last = i;
 }
