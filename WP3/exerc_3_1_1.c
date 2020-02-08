@@ -63,6 +63,9 @@ void recordDirections(ROBOT *records, int *last){
     } else if (directions[i] == 't'){
       turn(records);
       records++;
+    } else {
+      puts("Error: Another character other than m or t was entered.");
+      break;
     }
     i++;
   }

@@ -56,11 +56,16 @@ void recordDirections(ROBOT *records, int *last){
       move(i, records);
     } else if (directions[i] == 't'){
       turn(i, records);
+    } else {
+      puts("Error: Another character other than m or t was entered.");
+      break;
     }
     i++;
+
     if(records[i].xpos < 0 || records[i].xpos > 99 || records[i].ypos < 0 || records[i].ypos > 99){
       break;
     }
+
   }
   *last = i;
 }
@@ -111,7 +116,7 @@ int main(){
 
     *pLastRecord = records[last];
     printf("Last position: %d\n", last);
-    
+
     if(pLastRecord->xpos < 0 || pLastRecord->xpos > 99 || pLastRecord->ypos < 0 || pLastRecord->ypos > 99){
       puts("Robot went out of bounds");
     } else {
