@@ -1,99 +1,119 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdbool.h>
-#define MAX 30
+#include <string.h>
+#include <stdlib.h>
+#define MAX 100
 
 enum DIRECTION {N,O,S,W};
-void move(int *pPosX, int *pPos, enum DIRECTION *pDir);
-void turn(enum DIRECTION *pDir);
-void clear_stdin(void);
 
 typedef struct {
-int xpos;
-int ypos;
-enum DIRECTION dir;
+  int xpos;
+  int ypos;
+  enum DIRECTION dir;
 } ROBOT;
 
-
-void move(int *pPosX, int *pPosY, enum DIRECTION *pDir){
-  if (*pDir == N){
-    *pPosY += 1; 
-  } else if(*pDir == O){
-    *pPosX += 1;
-  } else if(*pDir == S){
-    *pPosY -= 1;
-  } else if (*pDir == W){
-    *pPosX -= 1;
-  }
-}
-
-//void turn(char *c, int *pPosX, int *pPosY, enum DIRECTION *pDir){
-void turn(enum DIRECTION *pDir){
-  if (*pDir == N){
-    *pDir = O;
-  } else if (*pDir == O){
-    *pDir = S;
-  } else if(*pDir == S){
-    *pDir = W;
-  } else if (*pDir == W){
-    *pDir = N;
-  }
-}
+void recordFirstPos(ROBOT records[], int *last);
+void recordDirections(ROBOT records[], int *last);
+void move(int structPos, ROBOT records[]);
+void turn(int structPos, ROBOT records[]);
+void turn();
 
 void clear_stdin(void){
   while(getchar() != '\n'){
+  }
+}
 
+void recordFirstPos(ROBOT records[], int *last){
+
+  records->dir = N;
+
+  puts("Enter x position: ");
+  scanf("%d", &records->xpos);
+  clear_stdin();
+  while (records->xpos < 0 || records->xpos > 99){
+    puts("Please enter a position between 0 and 99. Enter x position:");
+    scanf("%d", &records->xpos);
+    clear_stdin();
+  }
+  puts("Enter y position: ");
+  scanf("%d", &records->ypos);
+  clear_stdin();
+  while (records->ypos < 0 || records->ypos > 99){
+    puts("Please enter a position between 0 and 99. Enter y position:");
+    scanf("%d", &records->ypos);
+    clear_stdin();
+  }
+  *last = 0; 
+}
+
+void recordDirections(ROBOT records[], int *last){
+  char directions[MAX];
+  int len, i = 0;
+  printf("Enter directions (m & t): ");
+  fgets(directions, MAX, stdin);
+  len = strlen(directions);
+  while (i < len){
+    if (directions[i] == 'm'){
+      move(i, records);
+    } else if (directions[i] == 't'){
+      turn(i, records);
+    }
+    i++;
+  }
+  *last = i - 1;
+}
+
+void move(int structPos, ROBOT records[]){
+  int nextPosX, nextPosY, nextDir;
+  if(records[structPos].dir == N){
+    records[structPos + 1].xpos = records[structPos].xpos;
+    records[structPos + 1].ypos = records[structPos].ypos + 1;
+    records[structPos + 1].dir = records[structPos].dir;
+  } else if(records[structPos].dir == O){
+    records[structPos + 1].xpos = records[structPos].xpos + 1;
+    records[structPos + 1].ypos = records[structPos].ypos;
+    records[structPos + 1].dir = records[structPos].dir;
+  } else if(records[structPos].dir == S){
+    records[structPos + 1].xpos = records[structPos].xpos;
+    records[structPos + 1].ypos = records[structPos].ypos - 1;
+    records[structPos + 1].dir = records[structPos].dir;
+  } else if(records[structPos].dir == W){
+    records[structPos + 1].xpos = records[structPos].xpos - 1;
+    records[structPos + 1].ypos = records[structPos].ypos;
+    records[structPos + 1].dir = records[structPos].dir;
+  }
+}
+
+void turn(int structPos, ROBOT records[]){
+  records[structPos + 1].xpos = records[structPos].xpos;
+  records[structPos + 1].ypos = records[structPos].ypos;
+  if(records[structPos].dir == N){
+    records[structPos + 1].dir = O;
+  } else if(records[structPos].dir == O){
+    records[structPos + 1].dir = S;
+  } else if(records[structPos].dir == S){
+    records[structPos + 1].dir = W;
+  } else if(records[structPos].dir == W){
+    records[structPos + 1].dir = N;
   }
 }
 
 int main(){
-  ROBOT robot;
-  int i;
-  char directionInput[MAX];
-  int *pPosX = &robot.xpos;
-  int *pPosY = &robot.ypos;
-  char *pDirectionInput = directionInput;
-  enum DIRECTION *pDir = &robot.dir;
+  ROBOT records[MAX], lastRecord;
+  ROBOT *pRecords = records;
+  ROBOT *pLastRecord = &lastRecord;
+  int last;
+  int *pLast = &last;
 
-  robot.dir = N;
+  while(true){
 
-  printf("%d\n", robot.dir);
+    recordFirstPos(records, pLast);
+    recordDirections(pRecords, pLast);
 
-  while (true) {
-    puts("Enter x position:");
-    scanf("%d", &robot.xpos);
-    clear_stdin();
-    while (robot.xpos < 0 || robot.xpos > 99){
-      puts("Please enter a position between 0 and 99. Enter x position:");
-      scanf("%d", &robot.xpos);
-      clear_stdin();
-    }
-    puts("Enter y position:");
-    scanf("%d", &robot.ypos);
-    clear_stdin();
-    while (robot.ypos < 0 || robot.ypos > 99){
-      puts("Please enter a position between 0 and 99. Enter y position:");
-      scanf("%d", &robot.ypos);
-      clear_stdin();
-    }
-    printf("Enter directions (m & t): ");
-    fgets(directionInput, MAX, stdin);
-
-    for(i = 0; i < MAX; i++){
-      if(directionInput[i] == 'm'){
-        move(pPosX, pPosY, pDir);
-        if(robot.xpos < 0 || robot.xpos > 99 || robot.ypos < 0 || robot.ypos > 99){
-          break;
-        }
-      } else if (directionInput[i] == 't'){
-        turn(pDir);
-      }
-    }
-    if(robot.xpos < 0 || robot.xpos > 99 || robot.ypos < 0 || robot.ypos > 99){
-      puts("Robot went out of bounds");
-    } else {
-      printf("Position of x: %d Position of y: %d\n", *pPosX, *pPosY);
-    }
+    *pLastRecord = records[last];
+    printf("Last position: %d\n", last);
+    printf("Position of x: %d\nPosition of y: %d\n", pLastRecord->xpos, pLastRecord->ypos);
+    
   }
   return 0;
 }
