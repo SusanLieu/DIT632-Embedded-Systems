@@ -16,7 +16,6 @@ void recordFirstPos(ROBOT *records, int *last);
 void recordDirections(ROBOT *records, int *last);
 void move(int structPos, ROBOT *records);
 void turn(int structPos, ROBOT *records);
-void turn();
 
 void clear_stdin(void){
   while(getchar() != '\n'){
@@ -52,15 +51,18 @@ void recordDirections(ROBOT *records, int *last){
   printf("Enter directions (m & t): ");
   fgets(directions, MAX, stdin);
   len = strlen(directions);
-  while (i < len){
+  while (i < len - 1){
     if (directions[i] == 'm'){
       move(i, records);
     } else if (directions[i] == 't'){
       turn(i, records);
     }
     i++;
+    if(records[i].xpos < 0 || records[i].xpos > 99 || records[i].ypos < 0 || records[i].ypos > 99){
+      break;
+    }
   }
-  *last = i - 1;
+  *last = i;
 }
 
 void move(int structPos, ROBOT *records){
@@ -109,7 +111,12 @@ int main(){
 
     *pLastRecord = records[last];
     printf("Last position: %d\n", last);
-    printf("Position of x: %d\nPosition of y: %d\n", pLastRecord->xpos, pLastRecord->ypos);
+    
+    if(pLastRecord->xpos < 0 || pLastRecord->xpos > 99 || pLastRecord->ypos < 0 || pLastRecord->ypos > 99){
+      puts("Robot went out of bounds");
+    } else {
+      printf("Position of x: %d\nPosition of y: %d\n", pLastRecord->xpos, pLastRecord->ypos);
+    }
     
   }
   return 0;
