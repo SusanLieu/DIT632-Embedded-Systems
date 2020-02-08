@@ -12,10 +12,10 @@ typedef struct {
   enum DIRECTION dir;
 } ROBOT;
 
-void recordFirstPos(ROBOT records[], int *last);
-void recordDirections(ROBOT records[], int *last);
-void move(int structPos, ROBOT records[]);
-void turn(int structPos, ROBOT records[]);
+void recordFirstPos(ROBOT *records, int *last);
+void recordDirections(ROBOT *records, int *last);
+void move(int structPos, ROBOT *records);
+void turn(int structPos, ROBOT *records);
 void turn();
 
 void clear_stdin(void){
@@ -23,7 +23,7 @@ void clear_stdin(void){
   }
 }
 
-void recordFirstPos(ROBOT records[], int *last){
+void recordFirstPos(ROBOT *records, int *last){
 
   records->dir = N;
 
@@ -46,7 +46,7 @@ void recordFirstPos(ROBOT records[], int *last){
   *last = 0; 
 }
 
-void recordDirections(ROBOT records[], int *last){
+void recordDirections(ROBOT *records, int *last){
   char directions[MAX];
   int len, i = 0;
   printf("Enter directions (m & t): ");
@@ -63,28 +63,25 @@ void recordDirections(ROBOT records[], int *last){
   *last = i - 1;
 }
 
-void move(int structPos, ROBOT records[]){
-  int nextPosX, nextPosY, nextDir;
+void move(int structPos, ROBOT *records){
+
   if(records[structPos].dir == N){
     records[structPos + 1].xpos = records[structPos].xpos;
     records[structPos + 1].ypos = records[structPos].ypos + 1;
-    records[structPos + 1].dir = records[structPos].dir;
   } else if(records[structPos].dir == O){
     records[structPos + 1].xpos = records[structPos].xpos + 1;
     records[structPos + 1].ypos = records[structPos].ypos;
-    records[structPos + 1].dir = records[structPos].dir;
   } else if(records[structPos].dir == S){
     records[structPos + 1].xpos = records[structPos].xpos;
     records[structPos + 1].ypos = records[structPos].ypos - 1;
-    records[structPos + 1].dir = records[structPos].dir;
   } else if(records[structPos].dir == W){
     records[structPos + 1].xpos = records[structPos].xpos - 1;
     records[structPos + 1].ypos = records[structPos].ypos;
-    records[structPos + 1].dir = records[structPos].dir;
   }
+  records[structPos + 1].dir = records[structPos].dir;
 }
 
-void turn(int structPos, ROBOT records[]){
+void turn(int structPos, ROBOT *records){
   records[structPos + 1].xpos = records[structPos].xpos;
   records[structPos + 1].ypos = records[structPos].ypos;
   if(records[structPos].dir == N){
