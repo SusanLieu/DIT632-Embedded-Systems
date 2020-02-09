@@ -20,9 +20,27 @@ void append_file(PERSON *inrecord); // appends a new person to the file
 PERSON create_dummy(PERSON *inrecord);
 void clear_stdin(void);
 void printOptions();
+void remove_extra_chars(char* string);
+void remove_newline(char* string);
 
 void clear_stdin(){
   while(getchar() != '\n'){
+  }
+}
+
+void remove_newline(char* string){
+  int length = strlen(string);
+  if((length > 0) && (string[length-1] == '\n')){
+    string[length-1] ='\0';
+  }
+}
+
+void remove_extra_chars(char* string){
+  int c;
+  if (strchr(string, '\n') == NULL) {
+    while ((c = getchar()) != EOF && c != '\n'){
+
+    }
   }
 }
 
@@ -31,24 +49,19 @@ PERSON input_record(){
   char temp[20];
   puts("\nEnter first name: ");
   fgets(temp, 20, stdin);
-  // Gets rid of the '\n' character 
-  strtok(temp, "\n");
-  // Clear input buffer to not leak into last name
-  clear_stdin();
+  remove_extra_chars(temp);
+  remove_newline(temp);
+  //strtok(temp, "\n");
   strlcpy(person->firstname, temp, sizeof(person->firstname));
   puts("Enter last name: ");
   fgets(temp, 20, stdin);
-  // Gets rid of the '\n' character 
-  strtok(temp, "\n");
-  // Clear input buffer to not leak into pers number
-  clear_stdin();
+  remove_extra_chars(temp);
+  remove_newline(temp);
   strlcpy(person->famnamne, temp, sizeof(person->famnamne));
   puts("Enter person number: ");
   fgets(temp, 13, stdin);
-  // Gets rid of the '\n' character 
-  strtok(temp, "\n");
-  // Clear input buffer to not leak into next input
-  clear_stdin();
+  remove_extra_chars(temp);
+  remove_newline(temp);
   strlcpy(person->pers_number, temp, sizeof(person->pers_number));
   free(person);
   return *person;
@@ -176,14 +189,16 @@ int main( void){
         clear_stdin();
         puts("\nType in name to search for:");
         fgets(name, 20, stdin);
-        strtok(name, "\n");
+        //or maybe check if name > 20
+        remove_extra_chars(name);
+        remove_newline(name);
         search_by_name(&nameOption, name);
         break;
       case 4:
         printfile();
         break;
       case 5:
-        puts("===>Ending program.");
+        puts("===>Ending program.\n");
         exit(1);
         break;
       default:
