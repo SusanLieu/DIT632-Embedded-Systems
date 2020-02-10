@@ -110,6 +110,7 @@ void search_by_name(int *option, char *name){
       //person++;
     }
   }
+  free(person);
   fclose(fileptr);
 }
 
@@ -126,6 +127,7 @@ void write_new_file(PERSON *inrecord){
   fwrite(inrecord, sizeof(PERSON), 1, fileptr);
   fclose(fileptr);
   printf("\n===>Created new file: %s\n", FILENAME);
+  free(inrecord);
 }
 
 PERSON create_dummy(PERSON *inrecord){
@@ -153,7 +155,7 @@ void printfile(){
 			}
 		}
 		fclose(fileptr);
-
+    free(person);
 }
 
 void printOptions(){
