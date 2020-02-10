@@ -45,24 +45,25 @@ void remove_extra_chars(char* string){
 }
 
 PERSON input_record(){
-  PERSON *person = (PERSON*)malloc(sizeof(PERSON));
-  char temp[20];
+  PERSON *person = malloc(sizeof(PERSON));
+  char tempName[20];
+  char tempNum[13];
   puts("\nEnter first name: ");
-  fgets(temp, 20, stdin);
-  remove_extra_chars(temp);
-  remove_newline(temp);
+  fgets(tempName, 20, stdin);
+  remove_extra_chars(tempName);
+  remove_newline(tempName);
   //strtok(temp, "\n");
-  strlcpy(person->firstname, temp, sizeof(person->firstname));
+  strlcpy(person->firstname, tempName, sizeof(person->firstname));
   puts("Enter last name: ");
-  fgets(temp, 20, stdin);
-  remove_extra_chars(temp);
-  remove_newline(temp);
-  strlcpy(person->famnamne, temp, sizeof(person->famnamne));
+  fgets(tempName, 20, stdin);
+  remove_extra_chars(tempName);
+  remove_newline(tempName);
+  strlcpy(person->famnamne, tempName, sizeof(person->famnamne));
   puts("Enter person number: ");
-  fgets(temp, 13, stdin);
-  remove_extra_chars(temp);
-  remove_newline(temp);
-  strlcpy(person->pers_number, temp, sizeof(person->pers_number));
+  fgets(tempNum, 13, stdin);
+  remove_extra_chars(tempNum);
+  remove_newline(tempNum);
+  strlcpy(person->pers_number, tempNum, sizeof(person->pers_number));
   free(person);
   return *person;
 }
@@ -114,7 +115,7 @@ void search_by_name(int *option, char *name){
 
 void write_new_file(PERSON *inrecord){
   FILE *fileptr;
-  inrecord = (PERSON*) malloc(sizeof(PERSON));
+  inrecord = malloc(sizeof(PERSON));
   fileptr = fopen(FILENAME, "wb");
   if (fileptr == NULL){
     puts("===>Error: cannot create the file.");
@@ -148,7 +149,7 @@ void printfile(){
 				printf("\nFirstname: %s\n", person->firstname);
 				printf("Lastname: %s\n", person->famnamne);
 				printf("Person number: %s\n", person->pers_number);
-				person++;
+				//person++;
 			}
 		}
 		fclose(fileptr);
@@ -199,7 +200,7 @@ int main( void){
         break;
       case 5:
         puts("===>Ending program.\n");
-        exit(1);
+        exit(0);
         break;
       default:
         puts("===>Invalid input.");
