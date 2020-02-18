@@ -19,7 +19,7 @@ PIND Inport D
 
 unsigned char colKey;
 unsigned char key;
-char foundKey;
+unsigned char foundKey;
 
 void setup(){
   Serial.begin(9600);
@@ -41,41 +41,41 @@ void loop(){
     key = (PORTB << 4)|(colKey >> 4);
     
     if (key == 0x77){
-      foundKey = '0';
+      foundKey = 0;
     } else if (key == 0x7B){
-      foundKey = '1';
+      foundKey = 1;
     } else if (key == 0x7D){
-      foundKey = '2';
+      foundKey = 2;
     } else if (key == 0x7E){
-      foundKey = '3';
+      foundKey = 3;
     } else if (key == 0xB7){
-      foundKey = '4';
+      foundKey = 4;
     } else if (key == 0xBB){
-      foundKey = '5';
+      foundKey = 5;
     } else if (key == 0xBD){
-      foundKey = '6';
+      foundKey = 6;
     } else if (key == 0xBE){
-      foundKey = '7';
+      foundKey = 7;
     } else if (key == 0xD7){
-      foundKey = '8';
+      foundKey = 8;
     } else if (key == 0xDB){
-      foundKey = '9';
+      foundKey = 9;
     } else if (key == 0xDD){
-      foundKey = 'A';
+      foundKey = 10;
     } else if (key == 0xDE){
-      foundKey = 'B';
+      foundKey = 11;
     } else if (key == 0xE7){
-      foundKey = 'C';
+      foundKey = 12;
     } else if (key == 0xEB){
-      foundKey = 'D';
+      foundKey = 13;
     } else if (key == 0xED){
-      foundKey = 'E';
+      foundKey = 14;
     } else if (key == 0xEE){
-      foundKey = 'F';
+      foundKey = 15;
     } else {
       Serial.print("Don't have it yet");
     }
-    Serial.print(foundKey);
+    Serial.print(foundKey, HEX);
     delay(1000);
   }
 }
