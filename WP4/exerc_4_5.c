@@ -17,7 +17,7 @@ PORTD Outport D
 PIND Inport D
 */
 
-unsigned char colKey;
+unsigned char colPressed;
 unsigned char key;
 unsigned char foundKey;
 unsigned char pressedKey;
@@ -53,7 +53,7 @@ unsigned char keyPressed(){
     
   } else {
     
-    colKey = PIND; 
+    colPressed = PIND; 
     /*
     if 2nd ROW was being checked when key pressed
     PORTB = 0111 1011
@@ -61,7 +61,7 @@ unsigned char keyPressed(){
 
     if 1st COL was pressed 
     PIND = 0111 0011 (natural num: 115)
-    colKey = PIND
+    colPressed = PIND
     colKey >> 4 would then be 0000 0111
 
     Using the OR operator
@@ -69,7 +69,7 @@ unsigned char keyPressed(){
     0000 0111
     gives 1011 0111 => 0xB7 => key 4
     */
-    key = (PORTB << 4)|(colKey >> 4);
+    key = (PORTB << 4)|(colPressed >> 4);
     
     if (key == 0x77){
       foundKey = 0;
