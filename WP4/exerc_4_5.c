@@ -20,6 +20,7 @@ PIND Inport D
 unsigned char colKey;
 unsigned char key;
 unsigned char foundKey;
+unsigned char pressedKey;
 
 void setup(){
   Serial.begin(9600);
@@ -30,13 +31,28 @@ void setup(){
 
 void loop(){
   
+  pressedKey = keyPressed();
+  if (pressedKey != 0xFF){
+    Serial.print(pressedKey, HEX);
+    delay(1000);
+  }
+}
+
+
+unsigned char keyPressed(){
+  
   if(PIND == 0xF3){
+    
     if (PORTB == 0x1E){
       PORTB = 0xF7;
     } else {
       PORTB = PORTB >> 1;
     }
+    
+    return 0xFF;
+    
   } else {
+    
     colKey = PIND; 
     key = (PORTB << 4)|(colKey >> 4);
     
@@ -72,10 +88,7 @@ void loop(){
       foundKey = 14;
     } else if (key == 0xEE){
       foundKey = 15;
-    } else {
-      Serial.print("Don't have it yet");
     }
-    Serial.print(foundKey, HEX);
-    delay(1000);
+    return foundKey;
   }
 }
