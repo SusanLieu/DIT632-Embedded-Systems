@@ -54,6 +54,21 @@ unsigned char keyPressed(){
   } else {
     
     colKey = PIND; 
+    /*
+    if 2nd ROW was being checked when key pressed
+    PORTB = 0111 1011
+    PORTB << 4 would then be 1011 0000
+
+    if 1st COL was pressed 
+    PIND = 0111 0011 (natural num: 115)
+    colKey = PIND
+    colKey >> 4 would then be 0000 0111
+
+    Using the OR operator
+    1011 0000
+    0000 0111
+    gives 1011 0111 => 0xB7 => key 4
+    */
     key = (PORTB << 4)|(colKey >> 4);
     
     if (key == 0x77){
