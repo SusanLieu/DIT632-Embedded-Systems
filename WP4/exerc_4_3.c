@@ -7,13 +7,15 @@ unsigned char random_inport( void);
 
 int main(){
 	int nr;
-  unsigned char notPressed = 0x8F;
+  unsigned char notPressed = 0x8F; // 1000 1111
 	unsigned char port;
+  unsigned char num;
 	srand(time(0)); 
   
 	while (1) {
 	   port = random_inport();
-		 if ((notPressed & port) >> 7 == 0){
+		 if (port >> 7 == 0){
+			 port = port & 15; // 0000 1111
 			 printf("Hexadecimal form of pressed key (%d): %x\n", port, port);
 		 }
 	   f_delay(5);
@@ -35,6 +37,6 @@ void f_delay(int tenth_sec){
 
 unsigned char random_inport( void){
 	unsigned char inport = 0;
-	inport = rand() % 16;
+	inport = rand() % 256;
 	return (inport);
 }
