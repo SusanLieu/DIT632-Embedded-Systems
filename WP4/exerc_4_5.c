@@ -1,26 +1,20 @@
-/*-----------------------------------
-- configure the IO ports
-- in an infinity loop
-Call a function checking if any key is pressed and if it
-should return it´s value.
-If a key was pressed print out the key value ( 0-9 ,
-A-F) on the serial monitor.
-Delay for one second.
------------------------------------*/
+/* ====================================
+File name: exerc_4_5.c
+Date: 2020-02-20
+Group Number:
+Members That contributed:
+Erik Tingström
+Lema Rassul
+Susan Lieu
+Members not present at the demonstration:
+-----
+Demonstration code: [45522]
+====================================== */
 
-/* --- Macros predefined for the compiler
-DDRB Data direction register B
-PORTB Outport B
-PINB Inport B
-DDRD Data direction register D
-PORTD Outport D
-PIND Inport D
-*/
-
-unsigned char colPressed;
-unsigned char key;
 unsigned char foundKey;
 unsigned char pressedKey;
+int foundRow;
+int colPressed;
 
 void setup(){
   Serial.begin(9600);
@@ -38,6 +32,39 @@ void loop(){
   }
 }
 
+int getRow(){
+  if (PORTB == 0XF7){
+    return 0;
+  } else if (PORTB == 0x7B){
+    return 1;
+  } else if (PORTB == 0x3D){
+    return 2;
+  } else if (PORTB == 0x1E){
+    return 3;
+  }
+}
+
+int getCol(){
+  if ((PIND >> 4) == 0x07){
+    return 0;
+  } else if ((PIND >> 4) == 0x0B){
+    return 1;
+  } else if ((PIND >> 4) == 0x0D){
+    return 2;
+  } else if ((PIND >> 4) == 0x0E){
+    return 3;
+  }
+}
+
+unsigned char getKey(int row, int col){
+  unsigned char keys[4][4] = {
+    {0, 1, 2, 3},
+    {4, 5, 6, 7},
+    {8, 9, 10, 11},
+    {12, 13, 14, 15}
+  };
+  return keys[row][col];
+}
 
 unsigned char keyPressed(){
   
@@ -48,62 +75,14 @@ unsigned char keyPressed(){
     } else {
       PORTB = PORTB >> 1;
     }
-    
     return 0xFF;
     
   } else {
     
-    colPressed = PIND; 
-    /*
-    if 2nd ROW was being checked when key pressed
-    PORTB = 0111 1011
-    PORTB << 4 would then be 1011 0000
-
-    if 1st COL was pressed 
-    PIND = 0111 0011 (natural num: 115)
-    colPressed = PIND
-    colKey >> 4 would then be 0000 0111
-
-    Using the OR operator
-    1011 0000
-    0000 0111
-    gives 1011 0111 => 0xB7 => key 4
-    */
-    key = (PORTB << 4)|(colPressed >> 4);
-    
-    if (key == 0x77){
-      foundKey = 0;
-    } else if (key == 0x7B){
-      foundKey = 1;
-    } else if (key == 0x7D){
-      foundKey = 2;
-    } else if (key == 0x7E){
-      foundKey = 3;
-    } else if (key == 0xB7){
-      foundKey = 4;
-    } else if (key == 0xBB){
-      foundKey = 5;
-    } else if (key == 0xBD){
-      foundKey = 6;
-    } else if (key == 0xBE){
-      foundKey = 7;
-    } else if (key == 0xD7){
-      foundKey = 8;
-    } else if (key == 0xDB){
-      foundKey = 9;
-    } else if (key == 0xDD){
-      foundKey = 10;
-    } else if (key == 0xDE){
-      foundKey = 11;
-    } else if (key == 0xE7){
-      foundKey = 12;
-    } else if (key == 0xEB){
-      foundKey = 13;
-    } else if (key == 0xED){
-      foundKey = 14;
-    } else if (key == 0xEE){
-      foundKey = 15;
-    }
+    foundRow = getRow();
+    colPressed = getCol();
+    foundKey = getKey(foundRow, colPressed);
     return foundKey;
+    
   }
 }
