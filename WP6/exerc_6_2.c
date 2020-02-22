@@ -18,6 +18,8 @@ void *runner3(void *param);
 int main() {
 	time_t t;
 	pthread_t tid;
+  pthread_t tid2;
+  pthread_t tid3;
 	pthread_attr_t attr;
 	
 	srand((unsigned) time(&t));
@@ -29,14 +31,14 @@ int main() {
 	pthread_create(&tid, &attr, runner1, NULL);
 	pthread_join(tid, NULL);
 
-  pthread_create(&tid, &attr, runner2, NULL);
-	pthread_join(tid, NULL);
+  pthread_create(&tid2, &attr, runner2, NULL);
+	pthread_join(tid2, NULL);
 
 	printf("Enter value to find\n");
 	scanf("%d", &search);
 
-  pthread_create(&tid, &attr, runner3, NULL);
-	pthread_join(tid, NULL);
+  pthread_create(&tid3, &attr, runner3, NULL);
+	pthread_join(tid3, NULL);
 
 	return 0;
 }
