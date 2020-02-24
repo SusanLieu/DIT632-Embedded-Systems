@@ -1,0 +1,25 @@
+1. How many threads (in total) are created during the execution of the program?
+2 threads in total. The first thread is the main thread in main(), and then another thread is created on the line
+pthread_create(&tid, &attr, runner, NULL);.
+
+2. What are lines 16, 17, 20, 25 and 26 intended for?
+Line 16 (pthread_t tid): Initialises the variable "tid" of type pthread_t as a thread identifier.
+Line 17 (pthread_attr_t attr): Initialises the variable "attr" of type pthread_attr_t 
+Line 20 (pthread_attr_init(&attr)): 
+Line 25 (pthread_create(&tid, &attr, runner, NULL)): creates the thread with a pointer to the identifier "tid" and 
+runs the method "runner" as a new thread.
+Line 26 (pthread_join(tid, NULL)): blocks the main thread from continuing until the thread with identifier "tid" is finished.
+(Finished -> pthread_exit(0)).
+
+3. How many parameters are passed to function runner?
+0.
+
+4. How can function runner know the values for parameters that, such as max value, not are passed to it?
+The function runner knows the values of num_elems, array and max_value even though they are not passed through the parameter
+because they are global values. Global values are shared by all threads.
+
+5. Test how the behavior of the program changes if line 26 is omitted. Explain why.
+When line 26 is omitted, the array does not get sorted and the value to find returns with not found even though
+it exists in the array. This happens because the code below line 26 will execute without waiting for the runner thread/method
+to finish its execution of the code since the main thread does not wait for the tid thread to finish/terminate. 
+(Finish -> pthread_exit(0)).
