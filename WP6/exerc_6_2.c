@@ -34,9 +34,6 @@ int main() {
   pthread_create(&tid2, &attr, runner2, NULL);
 	pthread_join(tid2, NULL);
 
-	printf("Enter value to find\n");
-	scanf("%d", &search);
-
   pthread_create(&tid3, &attr, runner3, NULL);
 	pthread_join(tid3, NULL);
 
@@ -74,7 +71,11 @@ void *runner2(void *param) {
 }
 
 void *runner3(void *param){
+	int search;
   puts("Executing runner 3");
+
+	printf("Enter value to find\n");
+	scanf("%d", &search);
 
   int first = 0;
 	int last = num_elems - 1;
