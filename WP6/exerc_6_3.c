@@ -27,19 +27,12 @@ int main(void){
     switch (readStatus){
       case (DOOR_ACTIVATED|DOOR_CLOSED):
         set_control(OPEN_DOOR);
+
         // call function to open door slowly (openDoor -> keepDoorOpen)
         // which that function then calls a keep door open function
-
-        /*
-        make another method with interrupts or something
-        if set_control(OPEN_DOOR)? <-- something that recognises the change
-        */
-
         openDoor();
         break;
       case (DOOR_ACTIVATED|DOOR_OPENED):
-        // keep door open function?? (keepDoorOpen) to reset timer
-        // keepDoorOpen function should set_control(CLOSE_DOOR) -> call another function to close door
         keepDoorOpen();
         break;
       case (DOOR_ACTIVATED|DOOR_OPENING):
@@ -55,7 +48,7 @@ int main(void){
 
 void openDoor(){
   set_control(CLEAR);
-  delay();
+  //delay();
   keepDoorOpen();
 }
 
@@ -67,7 +60,7 @@ void keepDoorOpen(){
 
 void closeDoor(){
   set_control(CLEAR);
-  delay();
+  //delay();
 }
 
 void delay(){

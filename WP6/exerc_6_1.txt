@@ -5,14 +5,17 @@ pthread_create(&tid, &attr, runner, NULL);.
 2. What are lines 16, 17, 20, 25 and 26 intended for?
 Line 16 (pthread_t tid): Initialises the variable "tid" of type pthread_t as a thread identifier.
 Line 17 (pthread_attr_t attr): Initialises the variable "attr" of type pthread_attr_t 
-Line 20 (pthread_attr_init(&attr)): 
-Line 25 (pthread_create(&tid, &attr, runner, NULL)): creates the thread with a pointer to the identifier "tid" and 
-runs the method "runner" as a new thread.
+Line 20 (pthread_attr_init(&attr)): Initialises a thread object attributes to the default value (attr)
+default values are behaviours: It is unbounded, nondetached, has a default stack and stack size  and inhetits the parent's priority.
+Line 25 (pthread_create(&tid, &attr, runner, NULL)): creates the thread with a pointer to the thread identifier "tid" and 
+runs the method "runner" as a new thread. There are no arguments being passed, hence the NULL in the fourth parameter. 
+Note: runner in the parameter is not executing the method (hence it's not runner()) rather it is passing a pointer to the function. 
 Line 26 (pthread_join(tid, NULL)): blocks the main thread from continuing until the thread with identifier "tid" is finished.
-(Finished -> pthread_exit(0)).
+(Finished -> pthread_exit(0)). Second parameter is NULL because we are not returning anything from the thread nor do we care what 
+it returns. 
 
 3. How many parameters are passed to function runner?
-0.
+0. 
 
 4. How can function runner know the values for parameters that, such as max value, not are passed to it?
 The function runner knows the values of num_elems, array and max_value even though they are not passed through the parameter
