@@ -72,6 +72,7 @@ void *put(){
           inpos++;
           letter++;
           pthread_cond_signal(&not_empty);
+          count++;
         } else {
           inpos = 0;
         }
@@ -85,7 +86,7 @@ void *put(){
           fullBuffer = true;
           puts("Buffer is full");
         }
-      count++;
+      //count++;
       }
 
       if ((r = pthread_mutex_unlock(&count_mutex)) != 0) {
@@ -120,10 +121,11 @@ void *fetch(){
           fullBuffer = false;
           // to signal to the producer (put method) that the buffer is not full
           pthread_cond_signal(&not_full);
+          count++;
         } else {
           outpos = 0;
         }
-      count++;
+      //count++;
       }
 
       if ((r = pthread_mutex_unlock(&count_mutex)) != 0) {
