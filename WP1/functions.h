@@ -1,0 +1,2 @@
+void newRound();
+void startGame();
